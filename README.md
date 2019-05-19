@@ -15,6 +15,6 @@ This application is not yet ready for use.  This notice will be removed when it 
 
 3) **Extract** and **run** the executable.
 
-4) Click in order: "**Install Service**", "**Run Service**", "**Configuration**"
+4) Click **Configuration** and configure as desired.
 
-5) Configure as desired.
+5) Click "**Install Service**", then "**Run Service**".
