@@ -5,7 +5,7 @@ Approximates the speed of moving objects using an IP camera.
 This application is not yet ready for use.  This notice will be removed when it is ready.
 
 ## Requirements
-* Windows 7 or newer
+* Windows 7 or newer, 64 bit, with [.NET Framework 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) installed.
 * IP camera capable of streaming H.264 video via RTSP.
 
 ## Setup
