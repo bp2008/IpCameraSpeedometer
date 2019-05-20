@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.352
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IpCameraSpeedometer", "IpCameraSpeedometer\IpCameraSpeedometer.csproj", "{7C106C16-5808-4DAB-B0DE-4182F9B02861}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BPUtil", "..\BPUtil\BPUtil\BPUtil.csproj", "{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "OpenH264Lib", "..\OpenH264Lib.NET\OpenH264Lib\OpenH264Lib.vcxproj", "{B4FE105E-C607-40DC-A86B-AED03E14D18D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Debug|x64.ActiveCfg = Debug|x64
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Debug|x64.Build.0 = Debug|x64
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Debug|x86.ActiveCfg = Debug|x86
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Debug|x86.Build.0 = Debug|x86
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Release|x64.ActiveCfg = Release|Any CPU
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Release|x64.Build.0 = Release|Any CPU
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Release|x86.ActiveCfg = Release|Any CPU
+		{7C106C16-5808-4DAB-B0DE-4182F9B02861}.Release|x86.Build.0 = Release|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Debug|x64.Build.0 = Debug|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Debug|x86.Build.0 = Debug|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Release|x64.ActiveCfg = Release|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Release|x64.Build.0 = Release|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Release|x86.ActiveCfg = Release|Any CPU
+		{A4981D8D-DEBF-4B34-B9CE-FF25520A02B7}.Release|x86.Build.0 = Release|Any CPU
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Debug|x64.ActiveCfg = Debug|x64
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Debug|x64.Build.0 = Debug|x64
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Debug|x86.ActiveCfg = Debug|Win32
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Debug|x86.Build.0 = Debug|Win32
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Release|x64.ActiveCfg = Release|x64
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Release|x64.Build.0 = Release|x64
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Release|x86.ActiveCfg = Release|Win32
+		{B4FE105E-C607-40DC-A86B-AED03E14D18D}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E9BD45B2-15EE-4A82-BF3C-9FCB1072DECF}
+	EndGlobalSection
+EndGlobal
