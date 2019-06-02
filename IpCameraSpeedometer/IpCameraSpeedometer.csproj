@@ -74,6 +74,18 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AForge, Version=2.2.5.0, Culture=neutral, PublicKeyToken=c1db6ff4eaa06aeb, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>include\AForge\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging, Version=2.2.5.0, Culture=neutral, PublicKeyToken=ba8ddea9676ca48b, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>include\AForge\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Vision, Version=2.2.5.0, Culture=neutral, PublicKeyToken=b612fa915eefaa06, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>include\AForge\AForge.Vision.dll</HintPath>
+    </Reference>
     <Reference Include="RtspClientSharp">
       <HintPath>include\RtspClientSharp\RtspClientSharp.dll</HintPath>
     </Reference>
@@ -144,6 +156,18 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="include\AForge\AForge.dll" />
+    <Content Include="include\AForge\AForge.Imaging.dll" />
+    <Content Include="include\AForge\AForge.Imaging.pdb" />
+    <Content Include="include\AForge\AForge.Imaging.xml" />
+    <Content Include="include\AForge\AForge.pdb" />
+    <Content Include="include\AForge\AForge.Vision.dll" />
+    <Content Include="include\AForge\AForge.Vision.pdb" />
+    <Content Include="include\AForge\AForge.Vision.xml" />
+    <Content Include="include\AForge\AForge.xml" />
+    <Content Include="include\RtspClientSharp\RtspClientSharp.dll" />
+    <Content Include="include\RtspClientSharp\RtspClientSharp.pdb" />
+    <Content Include="include\RtspClientSharp\RtspClientSharp.xml" />
     <Content Include="openh264-1.8.0-win64.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
