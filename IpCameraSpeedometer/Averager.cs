@@ -24,7 +24,7 @@ namespace IpCameraSpeedometer
 
 		public decimal GetAverage()
 		{
-			while (queue.Count > 0 && queue.Peek().Expired)
+			while (queue.Count > 0 && queue.Peek().Expired(overTimeMs))
 				sum -= queue.Dequeue().Value;
 			if (queue.Count > 0)
 				return sum / queue.Count;
@@ -34,12 +34,9 @@ namespace IpCameraSpeedometer
 		class Sample
 		{
 			public DateTime Timestamp = DateTime.Now;
-			public bool Expired
+			public bool Expired(int expireTimeMs)
 			{
-				get
-				{
-					return DateTime.Now - Timestamp >= TimeSpan.FromMilliseconds(1000);
-				}
+				return DateTime.Now - Timestamp >= TimeSpan.FromMilliseconds(expireTimeMs);
 			}
 			public decimal Value;
 		}

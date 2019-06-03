@@ -28,7 +28,7 @@ namespace IpCameraSpeedometer
 
 		public SpeedMeasurer()
 		{
-			blobCounter = new BlobCountingObjectsProcessing(100, 50, false);
+			blobCounter = new BlobCountingObjectsProcessing(50, 50, false);
 			blobCounter.HighlightColor = Color.FromArgb(0, 255, 0);
 			SimpleBackgroundModelingDetector bmd = new SimpleBackgroundModelingDetector(true, true);
 			bmd.FramesPerBackgroundUpdate = 1;

@@ -29,15 +29,19 @@ namespace IpCameraSpeedometer
 			settings.Save(Globals.ConfigFilePath);
 		}
 
+		private static string lastWrittenSpeedText = null;
 		public static void WriteSpeedFile(decimal kph)
 		{
 			string filePath = Globals.ApplicationDirectoryBase + "speed.txt";
 			string speedText = GenerateSpeedText(kph);
+			if (lastWrittenSpeedText == speedText)
+				return;
 			for (int i = 0; i < 5; i++)
 			{
 				try
 				{
 					File.WriteAllText(filePath, speedText, Encoding.UTF8);
+					lastWrittenSpeedText = speedText;
 					return;
 				}
 				catch (IOException)
@@ -107,6 +111,7 @@ namespace IpCameraSpeedometer
 		{
 			if (speedometer != null)
 				return;
+			Logger.Info("Speedometer Initializing.");
 			speedometer = new Speedometer(settings, null);
 			speedometer.OnStop += Speedometer_OnStop;
 			speedometer.SpeedUpdated += Speedometer_SpeedUpdated;
@@ -117,6 +122,7 @@ namespace IpCameraSpeedometer
 		/// </summary>
 		public static void Shutdown()
 		{
+			Logger.Info("Speedometer shutting down.");
 			shuttingDown = true;
 			speedometer?.Stop();
 		}
@@ -124,7 +130,11 @@ namespace IpCameraSpeedometer
 		private static void Speedometer_OnStop(object sender, EventArgs e)
 		{
 			if (!shuttingDown)
+			{
+				Logger.Info("Speedometer stopped unexpectedly. Restarting in 10 seconds.");
+				Thread.Sleep(10000);
 				speedometer.Start();
+			}
 		}
 
 		private static void Speedometer_SpeedUpdated(object sender, decimal kph)
