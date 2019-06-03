@@ -1,6 +1,8 @@
 # IpCameraSpeedometer
 Approximates the speed of moving objects using an IP camera.  
 
+It is really clunky and not necessarily accurate, but perhaps fun to play with.
+
 ## Requirements
 * Windows 7 or newer, 64 bit, with [.NET Framework 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) installed.
 * IP camera capable of streaming H.264 video via RTSP.
@@ -15,3 +17,9 @@ Approximates the speed of moving objects using an IP camera.
 4) Click **Configuration** and configure as desired.
 
 5) Click "**Install Service**", then "**Run Service**".
+
+## Example Output
+
+This is a shapshot captured using Blue Iris to overlay the text, using this as a template `[%HMETER-20-96.5%] %MPH1% MPH`
+
+![Example Output](https://i.imgur.com/e0bFhp4.jpg)
