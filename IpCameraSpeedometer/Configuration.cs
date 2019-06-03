@@ -18,21 +18,26 @@ namespace IpCameraSpeedometer
 {
 	public partial class Configuration : Form
 	{
-		BackgroundWorker bwStreamer;
-		CancellationTokenSource streamingCancelTokenSource;
+		Speedometer meter;
 		CalibrationWindow calibrationWindow;
+		bool kph = true;
+		decimal lastSpeedKPH = 0;
+		Averager speedAverager = new Averager(1000);
+
 		public Configuration()
 		{
 			InitializeComponent();
 			txtStreamUrl.Text = ServiceWrapper.settings.StreamUrl;
 			nudPixelsPerMeter.Value = ServiceWrapper.settings.PixelsPerMeter;
 			txtUser.Text = ServiceWrapper.settings.StreamUser;
-			txtPassword.Text = FromBase64(ServiceWrapper.settings.StreamPass);
+			txtPassword.Text = Util.FromBase64(ServiceWrapper.settings.StreamPass);
+			txtOutputFormat.Text = ServiceWrapper.settings.OutputTemplate;
 		}
 		private void Configuration_FormClosing(object sender, FormClosingEventArgs e)
 		{
-			streamingCancelTokenSource?.Cancel();
+			meter?.Stop();
 			pbCamPreview.Image?.Dispose();
+			calibrationWindow?.Close();
 		}
 
 		#region Input Change Events
@@ -66,7 +71,7 @@ namespace IpCameraSpeedometer
 
 		private void TxtPassword_TextChanged(object sender, EventArgs e)
 		{
-			ServiceWrapper.settings.StreamPass = ToBase64(txtPassword.Text);
+			ServiceWrapper.settings.StreamPass = Util.ToBase64(txtPassword.Text);
 			ServiceWrapper.SaveSettings();
 		}
 
@@ -78,125 +83,96 @@ namespace IpCameraSpeedometer
 				txtPassword.PasswordChar = '*';
 		}
 
-		private string ToBase64(string text)
+		private void CbPreviewObjectTracking_CheckedChanged(object sender, EventArgs e)
 		{
-			if (text == null)
-				return "";
-			byte[] utf8Bytes = Encoding.UTF8.GetBytes(text);
-			return Convert.ToBase64String(utf8Bytes);
+			if (meter != null)
+				meter.HighlightTrackedObjects = cbPreviewObjectTracking.Checked;
 		}
-		private string FromBase64(string base64)
+
+		private void TxtOutputFormat_TextChanged(object sender, EventArgs e)
 		{
-			if (base64 == null)
-				return "";
-			byte[] utf8Bytes = Convert.FromBase64String(base64);
-			return Encoding.UTF8.GetString(utf8Bytes);
+			ServiceWrapper.settings.OutputTemplate = txtOutputFormat.Text;
+			ServiceWrapper.SaveSettings();
+		}
+
+		private void LblSpeedometerPreview_Click(object sender, EventArgs e)
+		{
+			kph = !kph;
+			UpdateSpeedPreview();
 		}
 		#endregion
 
 		#region Streaming Preview
 		private void BtnLoadStream_Click(object sender, EventArgs e)
 		{
-			if (streamingCancelTokenSource != null)
+			if (meter != null)
 			{
-				streamingCancelTokenSource?.Cancel();
-				streamingCancelTokenSource = null;
+				meter.Stop();
+				meter = null;
 				btnLoadStream.Text = "LOAD";
 			}
 			else
 			{
-				bwStreamer = new BackgroundWorker();
-				bwStreamer.WorkerReportsProgress = true;
-				bwStreamer.WorkerSupportsCancellation = true;
-				bwStreamer.DoWork += BwStreamer_DoWork;
-				bwStreamer.ProgressChanged += BwStreamer_ProgressChanged;
+				meter = new Speedometer(ServiceWrapper.settings, RenderFrame);
+				meter.OnError += Meter_OnError;
+				meter.OnStop += Meter_OnStop;
+				meter.SpeedUpdated += Meter_SpeedUpdated;
+				meter.HighlightTrackedObjects = cbPreviewObjectTracking.Checked;
+				meter.Start();
 
-				streamingCancelTokenSource = new CancellationTokenSource();
-				streamingCancelTokenSource.Token.Register(bwStreamer.CancelAsync);
-
-				bwStreamer.RunWorkerAsync(new
-				{
-					bw = bwStreamer,
-					cancellationToken = streamingCancelTokenSource.Token
-				});
 				btnLoadStream.Text = "STOP";
 			}
 		}
 
-		private void BwStreamer_DoWork(object sender, DoWorkEventArgs e)
+		private void Meter_OnStop(object sender, EventArgs e)
 		{
-			try
-			{
-				dynamic args = e.Argument;
-				BackgroundWorker bw = (BackgroundWorker)args.bw;
-				CancellationToken cancellationToken = (CancellationToken)args.cancellationToken;
-
-				Uri serverUri = new Uri(ServiceWrapper.settings.StreamUrl);
-
-				ConnectionParameters connectionParameters;
-				if (!string.IsNullOrWhiteSpace(ServiceWrapper.settings.StreamUser))
-					connectionParameters = new ConnectionParameters(serverUri, new NetworkCredential(ServiceWrapper.settings.StreamUser, FromBase64(ServiceWrapper.settings.StreamPass)));
-				else
-					connectionParameters = new ConnectionParameters(serverUri);
-				connectionParameters.RtpTransport = RtpTransportProtocol.TCP;
-
-				string openH264DllPath = Globals.ApplicationDirectoryBase + "openh264-1.8.0-win" + (Environment.Is64BitProcess ? "64" : "32") + ".dll";
-				using (OpenH264Lib.Decoder decoder = new OpenH264Lib.Decoder(openH264DllPath))
-				using (RtspClient rtspClient = new RtspClient(connectionParameters))
-				{
-					rtspClient.FrameReceived += (sender2, frame) =>
-					{
-						//process (e.g. decode/save to file) encoded frame here or 
-						//make deep copy to use it later because frame buffer (see FrameSegment property) will be reused by client
-						if (frame is RawH264IFrame)
-						{
-							RawH264IFrame iFrame = frame as RawH264IFrame;
-							DecodeFrame(bw, decoder, iFrame.SpsPpsSegment.ToArray());
-							DecodeFrame(bw, decoder, iFrame.FrameSegment.ToArray());
-						}
-						else if (frame is RawH264PFrame)
-						{
-							DecodeFrame(bw, decoder, frame.FrameSegment.ToArray());
-						}
-					};
-					if (!bw.CancellationPending)
-						rtspClient.ConnectAsync(cancellationToken).Wait();
-
-					if (!bw.CancellationPending)
-						rtspClient.ReceiveAsync(cancellationToken).Wait();
-				}
-			}
-			catch (TaskCanceledException) { }
-			catch (Exception ex)
-			{
-				if (ex is AggregateException)
-				{
-					AggregateException aex = ex as AggregateException;
-					if (aex.InnerExceptions.Count == 1 && aex.InnerException is TaskCanceledException)
-						return;
-				}
-				Logger.Debug(ex);
-				MessageBox.Show(ex.ToString());
-			}
+			btnLoadStream.Text = "LOAD";
+			meter = null;
 		}
 
-		private void DecodeFrame(BackgroundWorker bw, OpenH264Lib.Decoder decoder, byte[] frame)
+		private void Meter_SpeedUpdated(object sender, decimal speed)
 		{
-			Bitmap bmp = decoder.Decode(frame, frame.Length);
-			if (bmp != null)
-				bw.ReportProgress(0, bmp);
-		}
-
-		private void BwStreamer_ProgressChanged(object sender, ProgressChangedEventArgs e)
-		{
-			Image newImg = (Image)e.UserState;
-			if (calibrationWindow != null)
-				calibrationWindow.FeedImage(newImg);
+			if (this.InvokeRequired)
+				this.Invoke((Action<object, decimal>)Meter_SpeedUpdated, sender, speed);
 			else
 			{
-				Image oldImg = pbCamPreview.Image;
-				pbCamPreview.Image = newImg;
-				oldImg?.Dispose();
+				decimal kph = speedAverager.AddSample(speed);
+				if (lastSpeedKPH != kph)
+				{
+					lastSpeedKPH = kph;
+					UpdateSpeedPreview();
+					ServiceWrapper.WriteSpeedFile(kph);
+				}
+			}
+		}
+
+		private void UpdateSpeedPreview()
+		{
+			if (kph)
+				lblSpeedometerPreview.Text = lastSpeedKPH.ToString("0.0") + " KPH";
+			else
+				lblSpeedometerPreview.Text = (lastSpeedKPH * 0.621371m).ToString("0.0") + " MPH";
+		}
+
+		private void Meter_OnError(object sender, Exception ex)
+		{
+			MessageBox.Show(ex.ToString());
+		}
+
+		private void RenderFrame(SpeedometerFrame frame)
+		{
+			if (this.InvokeRequired)
+				this.Invoke((Action<SpeedometerFrame>)RenderFrame, frame);
+			else
+			{
+				if (calibrationWindow != null)
+					calibrationWindow.FeedImage(frame.Frame);
+				else
+				{
+					Image oldImg = pbCamPreview.Image;
+					pbCamPreview.Image = frame.Frame;
+					oldImg?.Dispose();
+				}
 			}
 		}
 		#endregion

@@ -1,0 +1,14 @@
+﻿<Weavers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="FodyWeavers.xsd">
+	<Costura>
+		<Unmanaged32Assemblies>
+			OpenH264Lib
+		</Unmanaged32Assemblies>
+		<Unmanaged64Assemblies>
+			OpenH264Lib
+		</Unmanaged64Assemblies>
+		<ExcludeAssemblies>
+			openh264-1.8.0-win64
+			openh264-1.8.0-win32
+		</ExcludeAssemblies>
+	</Costura>
+</Weavers>

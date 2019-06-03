@@ -19,10 +19,12 @@ namespace IpCameraSpeedometer
 
 		protected override void OnStart(string[] args)
 		{
+			ServiceWrapper.Initialize();
 		}
 
 		protected override void OnStop()
 		{
+			ServiceWrapper.Shutdown();
 		}
 	}
 }

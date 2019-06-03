@@ -50,6 +50,8 @@
 			this.nudPixelsPerFoot = new System.Windows.Forms.NumericUpDown();
 			this.label5 = new System.Windows.Forms.Label();
 			this.label12 = new System.Windows.Forms.Label();
+			this.cbPreviewObjectTracking = new System.Windows.Forms.CheckBox();
+			this.lblSpeedometerPreview = new System.Windows.Forms.Label();
 			((System.ComponentModel.ISupportInitialize)(this.pbCamPreview)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudPixelsPerMeter)).BeginInit();
 			((System.ComponentModel.ISupportInitialize)(this.nudPixelsPerFoot)).BeginInit();
@@ -175,7 +177,8 @@
 			this.txtOutputFormat.Name = "txtOutputFormat";
 			this.txtOutputFormat.ScrollBars = System.Windows.Forms.ScrollBars.Both;
 			this.txtOutputFormat.Size = new System.Drawing.Size(641, 136);
-			this.txtOutputFormat.TabIndex = 8;
+			this.txtOutputFormat.TabIndex = 9;
+			this.txtOutputFormat.TextChanged += new System.EventHandler(this.TxtOutputFormat_TextChanged);
 			// 
 			// label8
 			// 
@@ -265,12 +268,35 @@
 			this.label12.TabIndex = 23;
 			this.label12.Text = "- OR -";
 			// 
+			// cbPreviewObjectTracking
+			// 
+			this.cbPreviewObjectTracking.Location = new System.Drawing.Point(333, 257);
+			this.cbPreviewObjectTracking.Name = "cbPreviewObjectTracking";
+			this.cbPreviewObjectTracking.Size = new System.Drawing.Size(100, 33);
+			this.cbPreviewObjectTracking.TabIndex = 8;
+			this.cbPreviewObjectTracking.Text = "Preview Object Tracking";
+			this.cbPreviewObjectTracking.UseVisualStyleBackColor = true;
+			this.cbPreviewObjectTracking.CheckedChanged += new System.EventHandler(this.CbPreviewObjectTracking_CheckedChanged);
+			// 
+			// lblSpeedometerPreview
+			// 
+			this.lblSpeedometerPreview.Font = new System.Drawing.Font("Microsoft Sans Serif", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.lblSpeedometerPreview.Location = new System.Drawing.Point(439, 252);
+			this.lblSpeedometerPreview.Name = "lblSpeedometerPreview";
+			this.lblSpeedometerPreview.Size = new System.Drawing.Size(214, 42);
+			this.lblSpeedometerPreview.TabIndex = 25;
+			this.lblSpeedometerPreview.Text = " 0.0 KPH";
+			this.lblSpeedometerPreview.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+			this.lblSpeedometerPreview.Click += new System.EventHandler(this.LblSpeedometerPreview_Click);
+			// 
 			// Configuration
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.AutoScroll = true;
 			this.ClientSize = new System.Drawing.Size(665, 600);
+			this.Controls.Add(this.lblSpeedometerPreview);
+			this.Controls.Add(this.cbPreviewObjectTracking);
 			this.Controls.Add(this.label12);
 			this.Controls.Add(this.nudPixelsPerFoot);
 			this.Controls.Add(this.label5);
@@ -326,5 +352,7 @@
 		private System.Windows.Forms.NumericUpDown nudPixelsPerFoot;
 		private System.Windows.Forms.Label label5;
 		private System.Windows.Forms.Label label12;
+		private System.Windows.Forms.CheckBox cbPreviewObjectTracking;
+		private System.Windows.Forms.Label lblSpeedometerPreview;
 	}
 }

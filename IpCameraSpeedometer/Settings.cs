@@ -14,5 +14,6 @@ namespace IpCameraSpeedometer
 		public string StreamUser;
 		public string StreamPass;
 		public decimal PixelsPerMeter;
+		public string OutputTemplate;
 	}
 }

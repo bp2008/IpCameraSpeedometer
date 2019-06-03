@@ -20,11 +20,13 @@ namespace IpCameraSpeedometer
 			Globals.Initialize(Application.ExecutablePath);
 			PrivateAccessor.SetStaticFieldValue(typeof(Globals), "configFilePath", Globals.WritableDirectoryBase + "IpCameraSpeedometerSettings.xml");
 
+			AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
+			Application.ThreadException += Application_ThreadException;
+			Application.SetUnhandledExceptionMode(UnhandledExceptionMode.CatchException);
+
 			if (Environment.UserInteractive)
 			{
-				Settings settings = new Settings();
-				settings.Load(Globals.ConfigFilePath);
-				settings.SaveIfNoExist(Globals.ConfigFilePath);
+				ServiceWrapper.settings.SaveIfNoExist(Globals.ConfigFilePath);
 				string Title = "IpCameraSpeedometer " + System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString() + " Service Manager";
 				ButtonDefinition btnConfiguration = new ButtonDefinition("Configuration", btnConfiguration_Click);
 				ServiceManager serviceManager = new ServiceManager(Title, ServiceWrapper.settings.ServiceName, new ButtonDefinition[] { btnConfiguration }, new ServiceName(ServiceWrapper.settings.ServiceName, ServiceNameChange));
@@ -45,6 +47,16 @@ namespace IpCameraSpeedometer
 				};
 				ServiceBase.Run(ServicesToRun);
 			}
+		}
+
+		private static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+		{
+			Logger.Debug((Exception)e.ExceptionObject);
+		}
+
+		private static void Application_ThreadException(object sender, System.Threading.ThreadExceptionEventArgs e)
+		{
+			Logger.Debug(e.Exception);
 		}
 
 		private static void btnConfiguration_Click(object sender, EventArgs e)

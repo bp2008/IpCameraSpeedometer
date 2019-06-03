@@ -124,8 +124,8 @@ The following keywords will be automatically replaced:
 
 %KPH% - Detected speed in kilometers per hour
 %MPH% - Detected speed in miles per hour
-%KPH#% - Detected speed in kilometers per hour, where # is the number of decimal places to show
-%MPH#% - Detected speed in miles per hour, where # is the number of decimal places to show
-%HMETER-#-#% - A horizontal speed meter where the first # is a scaling factor and the second # is the maximum length of the meter. Give it a try!</value>
+%KPH1% - Detected speed in kilometers per hour with one decimal place
+%MPH1% - Detected speed in miles per hour with one decimal place
+%HMETER-#-#% - A horizontal speed meter where the first # is the size of the meter and the second # is the speed in kph where the meter is full. Give it a try!</value>
   </data>
 </root>
