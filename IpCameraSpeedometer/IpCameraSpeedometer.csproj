@@ -191,15 +191,6 @@
     <EmbeddedResource Include="openh264-1.8.0-win32.dll" />
     <EmbeddedResource Include="openh264-1.8.0-win64.dll" />
     <Content Include="FodyWeavers.xml" />
-    <Content Include="include\AForge\AForge.dll" />
-    <Content Include="include\AForge\AForge.Imaging.dll" />
-    <Content Include="include\AForge\AForge.Imaging.pdb" />
-    <Content Include="include\AForge\AForge.Imaging.xml" />
-    <Content Include="include\AForge\AForge.pdb" />
-    <Content Include="include\AForge\AForge.Vision.dll" />
-    <Content Include="include\AForge\AForge.Vision.pdb" />
-    <Content Include="include\AForge\AForge.Vision.xml" />
-    <Content Include="include\AForge\AForge.xml" />
     <Content Include="include\RtspClientSharp\RtspClientSharp.dll" />
     <Content Include="include\RtspClientSharp\RtspClientSharp.pdb" />
     <Content Include="include\RtspClientSharp\RtspClientSharp.xml" />
