@@ -1,7 +1,7 @@
 # IpCameraSpeedometer
 Approximates the speed of moving objects using an IP camera.  
 
-It is really clunky and not necessarily accurate, but perhaps fun to play with.
+It is really clunky and not necessarily accurate, but perhaps fun to play with.  This app also needs additional effort before it will be robust.  Currently if the streaming connection is lost it probably won't be reconnected until the service is restarted!
 
 ## Requirements
 * Windows 7 or newer, 64 bit, with [.NET Framework 4.7.2](https://dotnet.microsoft.com/download/dotnet-framework/net472) installed.
